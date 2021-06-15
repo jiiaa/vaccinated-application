@@ -21,10 +21,10 @@ const conopts = {
 };
 
 // const dropTable = 'DROP TABLE IF EXISTS orders';
-const createTableOrders = 'CREATE TABLE IF NOT EXISTS orders (id serial not null primary key, order_id varchar(255), order_number varchar(100) not null, responsible_person varchar(100), healthcare_district varchar(4), vaccine varchar(15), injections int, arrived timestamp)';
-// const createTableVaccinations = 'CREATE TABLE IF NOT EXISTS vaccinations (id serial not null primary key, vaccination_id varchar(255), source_bottle varchar(255), gender varchar(10), vaccination_date timestamp)';
-const insertOrders = 'INSERT INTO orders (order_id, order_number, responsible_person, healthcare_district, vaccine, injections, arrived) VALUES %L';
-// const insertVaccinations = 'INSERT INTO vaccinations (vaccination_id, source_bottle, gender, vaccination_date) VALUES %L';
+// const createTableOrders = 'CREATE TABLE IF NOT EXISTS orders (id serial not null, order_id varchar(255) not null primary key, order_number varchar(100) not null, responsible_person varchar(100), healthcare_district varchar(4), vaccine varchar(15), injections int, arrived timestamp)';
+const createTableVaccinations = 'CREATE TABLE IF NOT EXISTS vaccinations (id serial not null, vaccination_id varchar(255) not null primary key, source_bottle varchar(255), gender varchar(10), vaccination_date timestamp, CONSTRAINT fk_orders  FOREIGN KEY(source_bottle) REFERENCES orders(order_id))';
+// const insertOrders = 'INSERT INTO orders (order_id, order_number, responsible_person, healthcare_district, vaccine, injections, arrived) VALUES %L';
+const insertVaccinations = 'INSERT INTO vaccinations (vaccination_id, source_bottle, gender, vaccination_date) VALUES %L';
 
 
 const getData = (fileName, databaseCallback) => {
@@ -54,13 +54,13 @@ const runDatabaseQuery = (fileData) => {
     //     console.log('## DROP success:', res.command);
     //   }
     // });
-    client.query(createTableOrders, '', (err, res) => {
+    client.query(createTableVaccinations, '', (err, res) => {
       if (err) console.error('## CREATE failed:', err);
       if (!err) {
         console.log('## CREATE Success:', res.command);
       }
     });
-    const queryFormat = format(insertOrders, fileData);
+    const queryFormat = format(insertVaccinations, fileData);
     client.query(queryFormat, '', (err, res) => {
       done();
       if (err) console.error('## INSERT failed:', err);
@@ -72,7 +72,7 @@ const runDatabaseQuery = (fileData) => {
 };
 
 const runActions = async () => {
-  getData(file3, runDatabaseQuery);
+  getData(file21, runDatabaseQuery);
 };
 
 runActions();
