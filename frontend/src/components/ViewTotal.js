@@ -4,16 +4,16 @@ import dbService from '../services/dbService';
 const ViewTotal = () => {
   const [searchDate, setSearchDate] = useState('');
   const [searchTime, setSearchTime] = useState('');
+  const [totals, setTotals] = useState({});
 
   const handleSearch = async (e) => {
     e.preventDefault();
-    if (!searchDate || searchTime) {
+    if (!searchDate || !searchTime) {
       return;
     }
-    console.log('Date/time: %s / %s', searchDate, searchTime);
     try {
       const res = await dbService.getByDate(searchDate, searchTime);
-      console.log('res:', res);
+      setTotals(res.data[0]);
     } catch (err) {
       console.error('Database request failed:', err);
     }
@@ -38,6 +38,10 @@ const ViewTotal = () => {
         />
         <input type="submit" value="Search" />
       </form>
+      <div>
+        <div>Orders total: {totals.count}</div>
+        <div>Vaccines total: {totals.sum}</div>
+      </div>
     </div>
   );
 };
