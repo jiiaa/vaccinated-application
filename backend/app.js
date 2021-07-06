@@ -11,7 +11,7 @@ app.get('/api/ping', (req, res) => {
   res.send('<h3>Someone pinged Vaccinated Application</h3>');
 });
 
-app.use('/api', dbRouter);
+app.use('/api/v1', dbRouter);
 
 
 
