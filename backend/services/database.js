@@ -14,8 +14,18 @@ const pool = new Pool(conopts);
 
 // Get all orders and number of vaccines
 // from the beginning until the given date
-const getOrdersByDate = (date, callback) => {
-  const sqlSelect = format('SELECT COUNT(*), SUM(injections) FROM orders where arrived <= %L', date);
+const getOrdersByDate = (range, date, callback) => {
+  // Initialize the variable for sql query
+  let sqlSelect = '';
+  // Select orders of the set date only
+  if (range === 'dateonly') {
+    // Add the wildcard to the matching string
+    date = date + '%';
+    sqlSelect = format('SELECT COUNT(*), SUM(injections) FROM orders where arrived::text LIKE %L', date);
+  // Select all orders from the start until the set date
+  } else {
+    sqlSelect = format('SELECT COUNT(*), SUM(injections) FROM orders where arrived <= %L', date);
+  }
   pool.connect((err, client, done) => {
     if (err) {
       logger.logInfo('Pool connection failed:', err);
