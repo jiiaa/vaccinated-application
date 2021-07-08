@@ -12,8 +12,8 @@ const conopts = {
 
 const pool = new Pool(conopts);
 
-// Get all orders and number of vaccines
-// from the beginning until the given date
+// Get number of all orders and sum of vaccines
+// from day one until given date or on a day
 const getOrdersByDate = (range, date, callback) => {
   // Initialize the variable for sql query
   let sqlSelect = '';
@@ -42,6 +42,8 @@ const getOrdersByDate = (range, date, callback) => {
   });
 };
 
+// Get number of vaccinations given
+// from day one until given date or on a day
 const getVaccinatedByDate = (range, date, callback) => {
   // Initialize the variable for sql query
   let sqlSelect = '';
@@ -69,6 +71,10 @@ const getVaccinatedByDate = (range, date, callback) => {
     });
   });
 };
+
+// Get number of orders and vaccines per producer
+// from day one until given date or on a day
+//  select vaccine, count(*), sum(injections) from orders where arrived <= '2021-03-01' group by vaccine;
 
 module.exports = {
   getOrdersByDate,
