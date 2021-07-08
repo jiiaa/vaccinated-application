@@ -17,14 +17,42 @@ const pool = new Pool(conopts);
 const getOrdersByDate = (range, date, callback) => {
   // Initialize the variable for sql query
   let sqlSelect = '';
-  // Select orders of the set date only
+  // Get orders of the set date only
   if (range === 'dateonly') {
     // Add the wildcard to the matching string
     date = date + '%';
-    sqlSelect = format('SELECT COUNT(*), SUM(injections) FROM orders where arrived::text LIKE %L', date);
-  // Select all orders from the start until the set date
+    sqlSelect = format('SELECT COUNT(*), SUM(injections) FROM orders WHERE arrived::text LIKE %L', date);
+  // Select all orders from day one until the set date
   } else {
-    sqlSelect = format('SELECT COUNT(*), SUM(injections) FROM orders where arrived <= %L', date);
+    sqlSelect = format('SELECT COUNT(*), SUM(injections) FROM orders WHERE arrived <= %L', date);
+  }
+  pool.connect((err, client, done) => {
+    if (err) {
+      logger.logInfo('Pool connection failed:', err);
+      throw err;
+    }
+    client.query(sqlSelect, (error, data) => {
+      if (error) {
+        logger.logInfo('Select failed:', error);
+        throw error;
+      }
+      done();
+      callback(data.rows);
+    });
+  });
+};
+
+const getVaccinatedByDate = (range, date, callback) => {
+  // Initialize the variable for sql query
+  let sqlSelect = '';
+  // Get vaccinations of the set date only
+  if (range === 'dateonly') {
+    // Add the wildcard to the matching string
+    date = date + '%';
+    sqlSelect = format('SELECT COUNT(*) FROM vaccinations WHERE vaccination_date::text LIKE %L', date);
+  // Select all orders from day one until the set date
+  } else {
+    sqlSelect = format('SELECT COUNT(*) FROM vaccinations WHERE vaccination_date <= %L', date);
   }
   pool.connect((err, client, done) => {
     if (err) {
@@ -44,5 +72,6 @@ const getOrdersByDate = (range, date, callback) => {
 
 module.exports = {
   getOrdersByDate,
+  getVaccinatedByDate,
 };
 
