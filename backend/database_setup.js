@@ -73,7 +73,6 @@ const runProcess = async () => {
   const client = await pool.connect();
 
   for (let i = 0; i < fileNameArray.length; i++) {
-    console.log('i:', i);
     const fileOrderData = await getData(fileNameArray[i]);
     const res = await runDatabaseQuery(fileOrderData, client, createTableOrders, insertOrders);
     console.log('res:', res);
