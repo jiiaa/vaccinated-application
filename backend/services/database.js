@@ -95,10 +95,27 @@ const getOrdersPerProducer = async (range, date) => {
   }
 };
 
-// Get number of expired bottles (orders) by the given date
+// Get number of expired bottles (orders) and injections on a given date
 const getExpiredOrders = async (date) => {
 
-  const sqlSelect = format('SELECT COUNT(*) as expired FROM orders WHERE arrived < (%L::date - \'30 day\'::interval)', date);
+  const sqlSelect = format('SELECT COUNT(*) as expired_bottles, SUM(injections) as expired_injections FROM orders WHERE arrived < (%L::date - \'30 day\'::interval)', date);
+
+  const client = await pool.connect();
+  try {
+    const res = await client.query(sqlSelect, '');
+    client.release();
+    return res.rows;
+  } catch (err) {
+    logger.logInfo('Select failed:', err);
+    client.release();
+    throw err;
+  }
+};
+
+// Get number of valid bottles and injections on a given date
+const getValidOrders = async (date) => {
+
+  const sqlSelect = format('SELECT COUNT(*) as valid_bottles, SUM(injections)  as valid_injections FROM orders WHERE arrived > (%L::date - \'30 day\'::interval) AND arrived <= %L', date, date);
 
   const client = await pool.connect();
   try {
@@ -121,4 +138,5 @@ module.exports = {
   getVaccinatedByDate,
   getOrdersPerProducer,
   getExpiredOrders,
+  getValidOrders,
 };

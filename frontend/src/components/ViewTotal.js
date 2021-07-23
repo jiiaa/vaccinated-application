@@ -63,6 +63,7 @@ const ViewTotal = () => {
             name="total-time"
             onChange={(e) => setSearchTime(e.target.value)}
             value={searchTime}
+            disabled={searchRange === 'dateonly'}
           />
           <input type="submit" value="Search" />
         </div>

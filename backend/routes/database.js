@@ -70,7 +70,7 @@ dbRouter.get('/perproducer', async (req, res) => {
     res.json(dbRes);
   } catch (err) {
     logger.logInfo('Database query failed:', err);
-    res.json({ message: 'Database query failed' });
+    res.status(500).json({ message: 'Database query failed' });
   }
 });
 
@@ -83,8 +83,52 @@ dbRouter.get('/expired', async (req, res) => {
     res.json(dbRes);
   } catch (err) {
     logger.logInfo('Database query failed:', err);
-    res.json({ message: 'Database query failed' });
+    res.status(500).json({ message: 'Database query failed' });
   }
 });
+
+// Get number of expired injections on the given date
+dbRouter.get('/expired-injections', async (req, res) => {
+  const date = req.query.date;
+
+  try {
+    const expiredInjections = await dbService.getExpiredOrders(date);
+    const givenInjections = await dbService.getVaccinatedByDate('', date);
+
+    const expiredActual = expiredInjections[0].expired_injections - givenInjections[0].vaccinated;
+
+    res.json({ expiredInjections: expiredActual });
+  } catch (err) {
+    logger.logInfo('Database query failed:', err);
+    res.status(500).json({ message: 'Database query failed' });
+  }
+});
+
+// Get number of injections left to use
+dbRouter.get('/valid-injections', async (req, res) => {
+  const date = req.query.date;
+
+  try {
+    const validInjections = await dbService.getValidOrders(date);
+    const givenInjections = await dbService.getVaccinatedByDate('', date);
+    res.send();
+  } catch (err) {
+    logger.logInfo('Database query failed:', err);
+    res.status(500).json({ message: 'Database query failed' });
+  }
+});
+
+// Get number of injections going to expire in the next 10 days
+dbRouter.get('/tobexpire', async (req, res) => {
+  const date = req.query.date;
+
+  try {
+    const willExpire = await dbService.getWillExpire(date);
+    res.send();
+  } catch (err) {
+    logger.logInfo('Database query failed:', err);
+    res.status(500).json({ message: 'Database query failed' });
+  }
+})
 
 module.exports = dbRouter;
