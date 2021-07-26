@@ -1,7 +1,7 @@
 import React from 'react';
 
-import ViewTotal from './components/ViewTotal';
-import './App.css';
+import FormView from './components/FormView';
+import './styles/App.scss';
 
 function App() {
   return (
@@ -9,8 +9,8 @@ function App() {
       <div className="header">
         <h1>Vaccinated Application</h1>
       </div>
-      <div className="viewtotal">
-        <ViewTotal />
+      <div className="formview">
+        <FormView />
       </div>
     </div>
   );
