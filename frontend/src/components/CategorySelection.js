@@ -1,6 +1,12 @@
 import React from 'react';
 
-const CategorySelection = ({ searchCat, handleChange }) => {
+const CategorySelection = ({
+  searchCat,
+  setSearchCat,
+  setSearchRange,
+  setSearchTime,
+  setQueryRes
+}) => {
   return (
     <fieldset>
       <legend>Please select the information you are interested in:</legend>
@@ -11,7 +17,10 @@ const CategorySelection = ({ searchCat, handleChange }) => {
           name="category"
           value="arrived"
           checked={searchCat === 'arrived'}
-          onChange={handleChange}
+          onChange={(e) => {
+            setSearchCat(e.target.value);
+            setQueryRes('');
+          }}
         />
         <label htmlFor="arrived">Orders/vaccines arrived</label>
       </div>
@@ -22,7 +31,10 @@ const CategorySelection = ({ searchCat, handleChange }) => {
           name="category"
           value="vaccinated"
           checked={searchCat === 'vaccinated'}
-          onChange={handleChange}
+          onChange={(e) => {
+            setSearchCat(e.target.value);
+            setQueryRes('');
+          }}
         />
         <label htmlFor="vaccinated">Vaccinations given</label>
       </div>
@@ -33,7 +45,10 @@ const CategorySelection = ({ searchCat, handleChange }) => {
           name="category"
           value="perproducer"
           checked={searchCat === 'perproducer'}
-          onChange={handleChange}
+          onChange={(e) => {
+            setSearchCat(e.target.value);
+            setQueryRes('');
+          }}
         />
         <label htmlFor="perproducer">Orders/vaccines per producer</label>
       </div>
@@ -44,7 +59,12 @@ const CategorySelection = ({ searchCat, handleChange }) => {
           name="category"
           value="expired"
           checked={searchCat === 'expired'}
-          onChange={handleChange}
+          onChange={(e) => {
+            setSearchCat(e.target.value);
+            setSearchRange('dateonly');
+            setSearchTime('');
+            setQueryRes('');
+          }}
         />
         <label htmlFor="expired">Bottles expired</label>
       </div>
@@ -55,7 +75,10 @@ const CategorySelection = ({ searchCat, handleChange }) => {
           name="category"
           value="expired-injections"
           checked={searchCat === 'expired-injections'}
-          onChange={handleChange}
+          onChange={(e) => {
+            setSearchCat(e.target.value);
+            setQueryRes('');
+          }}
         />
         <label htmlFor="expired-injections">Wasted vaccines</label>
       </div>
@@ -66,7 +89,10 @@ const CategorySelection = ({ searchCat, handleChange }) => {
           name="category"
           value="valid-injections"
           checked={searchCat === 'valid-injections'}
-          onChange={handleChange}
+          onChange={(e) => {
+            setSearchCat(e.target.value);
+            setQueryRes('');
+          }}
         />
         <label htmlFor="valid-injections">Vaccines left</label>
       </div>
@@ -77,7 +103,10 @@ const CategorySelection = ({ searchCat, handleChange }) => {
           name="category"
           value="tobeexpired"
           checked={searchCat === 'tobeexpired'}
-          onChange={handleChange}
+          onChange={(e) => {
+            setSearchCat(e.target.value);
+            setQueryRes('');
+          }}
         />
         <label htmlFor="tobeexpired">To expire in 10 days</label>
       </div>

@@ -4,9 +4,10 @@ const TimeSelection = ({
   searchRange,
   searchDate,
   searchTime,
+  searchCat,
   setSearchDate,
   setSearchTime,
-  handleChange
+  setSearchRange
 }) => {
   return (
     <fieldset>
@@ -18,7 +19,10 @@ const TimeSelection = ({
           name="dayorrange"
           value="dateonly"
           checked={searchRange === 'dateonly'}
-          onChange={handleChange}
+          onChange={(e) => {
+            setSearchRange(e.target.value);
+            setSearchTime('');
+          }}
         />
         <label htmlFor="dateonly">This date only</label>
       </div>
@@ -29,7 +33,12 @@ const TimeSelection = ({
           name="dayorrange"
           value="range"
           checked={searchRange === 'range'}
-          onChange={handleChange}
+          onChange={(e) => setSearchRange(e.target.value)}
+          disabled={
+            searchCat === 'expired' ||
+            searchCat === 'expired-injections' ||
+            searchCat === 'valid-injections'
+          }
         />
         <label htmlFor="range">Until the date (including date)</label>
       </div>
@@ -46,8 +55,8 @@ const TimeSelection = ({
           id="total-time"
           name="total-time"
           onChange={(e) => setSearchTime(e.target.value)}
-          value={searchTime}
-          disabled={searchRange === 'dateonly'}
+          value={searchRange === 'dateonly' ? '' : searchTime}
+          disabled={searchRange === 'dateonly' || searchCat === 'expired'}
         />
       </div>
     </fieldset>

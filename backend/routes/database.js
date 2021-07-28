@@ -5,6 +5,7 @@ const logger = require('../utils/logger');
 
 // Get number of orders arrived until or on the given date
 dbRouter.get('/arrived', async (req, res) => {
+  // Get query params
   const range = req.query.range;
   const date = req.query.date;
   const time = req.query.time;
@@ -19,7 +20,7 @@ dbRouter.get('/arrived', async (req, res) => {
   }
 
   try {
-    const dbRes = dbService.getOrdersByDate(range, datetime);
+    const dbRes = await dbService.getOrdersByDate(range, datetime);
     res.json(dbRes);
   } catch (err) {
     logger.logInfo('Database query failed:', err);
@@ -111,6 +112,8 @@ dbRouter.get('/valid-injections', async (req, res) => {
   try {
     const validInjections = await dbService.getValidOrders(date);
     const givenInjections = await dbService.getVaccinatedByDate('', date);
+    console.log(validInjections);
+    console.log(givenInjections);
     res.send();
   } catch (err) {
     logger.logInfo('Database query failed:', err);

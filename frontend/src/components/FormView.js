@@ -7,21 +7,14 @@ import TimeSelection from './TimeSelection';
 import ResultList from './ResultList';
 
 const FormView = () => {
-  const [searchCat, setSearchCat] = useState('orderstotal');
+  const [searchCat, setSearchCat] = useState('arrived');
   const [searchRange, setSearchRange] = useState('dateonly');
   const [searchDate, setSearchDate] = useState('');
   const [searchTime, setSearchTime] = useState('');
-  const [queryRes, setQueryRes] = useState([]);
-
-  const handleCatChange = (e) => {
-    setSearchCat(e.target.value);
-  };
-
-  const handleTimeChange = (e) => {
-    setSearchRange(e.target.value);
-  };
+  const [queryRes, setQueryRes] = useState('');
 
   const handleSearch = async (e) => {
+    setQueryRes('loading');
     e.preventDefault();
     try {
       const res = await dbService.getByDate(
@@ -30,7 +23,7 @@ const FormView = () => {
         searchDate,
         searchTime
       );
-      setQueryRes(res.data[0]);
+      setQueryRes(res.data);
     } catch (err) {
       console.error('Database request failed:', err);
     }
@@ -41,15 +34,19 @@ const FormView = () => {
       <form onSubmit={handleSearch}>
         <CategorySelection
           searchCat={searchCat}
-          handleChange={handleCatChange}
+          setSearchCat={setSearchCat}
+          setSearchRange={setSearchRange}
+          setSearchTime={setSearchTime}
+          setQueryRes={setQueryRes}
         />
         <TimeSelection
           searchRange={searchRange}
           searchDate={searchDate}
           searchTime={searchTime}
+          searchCat={searchCat}
           setSearchDate={setSearchDate}
           setSearchTime={setSearchTime}
-          handleChange={handleTimeChange}
+          setSearchRange={setSearchRange}
         />
         <fieldset>
           <input type="submit" value="Search" />
