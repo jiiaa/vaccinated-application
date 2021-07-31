@@ -17,7 +17,7 @@ const FormView = () => {
     setQueryRes('loading');
     e.preventDefault();
     try {
-      const res = await dbService.getByDate(
+      const res = await dbService.doDatabaseQuery(
         searchCat,
         searchRange,
         searchDate,

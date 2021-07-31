@@ -37,7 +37,8 @@ const TimeSelection = ({
           disabled={
             searchCat === 'expired' ||
             searchCat === 'expired-injections' ||
-            searchCat === 'valid-injections'
+            searchCat === 'valid-injections' ||
+            searchCat === 'tobeexpired'
           }
         />
         <label htmlFor="range">Until the date (including date)</label>

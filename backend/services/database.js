@@ -126,6 +126,23 @@ const getValidOrders = async (date) => {
   }
 };
 
+// Get number of injections to be expired in next 10 days
+const getWillExpire = async (date) => {
+
+  const sqlSelect = format('SELECT COUNT(*) as valid_bottles, SUM(injections) as valid_injections FROM orders WHERE arrived > (%L::date - \'30 day\'::interval) AND arrived <= (%L::date - \'20 day\'::interval)', date, date);
+
+  const client = await pool.connect();
+  try {
+    const res = await client.query(sqlSelect, '');
+    client.release();
+    return res.rows;
+  } catch (err) {
+    logger.logInfo('Select failed:', err);
+    client.release();
+    throw err;
+  }
+};
+
 // select sum(injections), count(vaccination_id) from orders, vaccinations where order_id = source_bottle and source_bottle in (select order_id from orders where arrived > ('2021-02-03'::date - '30 day'::interval));
 
 // SELECT COUNT(*) FROM vaccinations WHERE source_bottle IN (SELECT order_id FROM orders WHERE arrived < ('2021-02-05'::date - '30 day'::INTERVAL));
@@ -136,4 +153,5 @@ module.exports = {
   getOrdersPerProducer,
   getExpiredOrders,
   getValidOrders,
+  getWillExpire
 };

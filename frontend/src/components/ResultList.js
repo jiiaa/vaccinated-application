@@ -64,18 +64,18 @@ const ResultList = ({ category, result }) => {
   if (category === 'valid-injections' && result) {
     return (
       <div>
-
+        Vaccines left to use: {result.validInjections}
       </div>
     );
   }
 
-  // if (category === 'toexpire' && result) {
-  //   return (
-  //     <div>
-
-  //     </div>
-  //   );
-  // }
+  if (category === 'tobeexpired' && result) {
+    return (
+      <div>
+        Vaccines to expire in next 10 days: {result[0].valid_injections}
+      </div>
+    );
+  }
 
   return null;
 };
