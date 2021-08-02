@@ -14,8 +14,13 @@ const FormView = () => {
   const [queryRes, setQueryRes] = useState('');
 
   const handleSearch = async (e) => {
-    setQueryRes('loading');
     e.preventDefault();
+    if (searchCat === '' || searchDate === '') {
+      setSearchCat('error');
+      setQueryRes({ message: 'Type of information or date cannot be empty.' });
+      return null;
+    }
+
     try {
       const res = await dbService.doDatabaseQuery(
         searchCat,
@@ -26,6 +31,8 @@ const FormView = () => {
       setQueryRes(res.data);
     } catch (err) {
       console.error('Database request failed:', err);
+      setSearchCat('error');
+      setQueryRes(err);
     }
   };
 

@@ -1,19 +1,16 @@
 import React from 'react';
 
 const ResultList = ({ category, result }) => {
-  console.log(result);
-  if (category === 'loading') {
-    return (
-      <div>
-        Getting the data...
-      </div>
-    );
-  }
 
   if (category === 'error') {
     return (
-      <div>
-        Ooops...something went wrong.
+      <div className="error">
+        <div>
+          Ooops...something went wrong.
+        </div>
+        <div>
+          {result.message}
+        </div>
       </div>
     );
   }
