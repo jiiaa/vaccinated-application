@@ -10,38 +10,40 @@ const TimeSelection = ({
   setSearchRange
 }) => {
   return (
-    <fieldset>
+    <fieldset className="timing">
       <legend>Please select range or a day and set the date and time</legend>
-      <div className="input-label">
-        <input
-          type="radio"
-          id="dateonly"
-          name="dayorrange"
-          value="dateonly"
-          checked={searchRange === 'dateonly'}
-          onChange={(e) => {
-            setSearchRange(e.target.value);
-            setSearchTime('');
-          }}
-        />
-        <label htmlFor="dateonly">This date only</label>
-      </div>
-      <div className="input-label">
-        <input
-          type="radio"
-          id="range"
-          name="dayorrange"
-          value="range"
-          checked={searchRange === 'range'}
-          onChange={(e) => setSearchRange(e.target.value)}
-          disabled={
-            searchCat === 'expired' ||
-            searchCat === 'expired-injections' ||
-            searchCat === 'valid-injections' ||
-            searchCat === 'tobeexpired'
-          }
-        />
-        <label htmlFor="range">Until the date (including date)</label>
+      <div className="radio-buttons">
+        <div className="input-label">
+          <input
+            type="radio"
+            id="dateonly"
+            name="dayorrange"
+            value="dateonly"
+            checked={searchRange === 'dateonly'}
+            onChange={(e) => {
+              setSearchRange(e.target.value);
+              setSearchTime('');
+            }}
+          />
+          <label htmlFor="dateonly">This date only</label>
+        </div>
+        <div className="input-label">
+          <input
+            type="radio"
+            id="range"
+            name="dayorrange"
+            value="range"
+            checked={searchRange === 'range'}
+            onChange={(e) => setSearchRange(e.target.value)}
+            disabled={
+              searchCat === 'expired' ||
+              searchCat === 'expired-injections' ||
+              searchCat === 'valid-injections' ||
+              searchCat === 'tobeexpired'
+            }
+          />
+          <label htmlFor="range">Until the date (including date)</label>
+        </div>
       </div>
       <div className="input-no-label">
         <input

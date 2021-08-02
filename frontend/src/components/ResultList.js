@@ -10,9 +10,17 @@ const ResultList = ({ category, result }) => {
     );
   }
 
-  if (category === 'arrived' && result) {
+  if (category === 'error') {
     return (
       <div>
+        Ooops...something went wrong.
+      </div>
+    );
+  }
+
+  if (category === 'arrived' && result) {
+    return (
+      <div className="result">
         <div>
           Orders arrived: {result[0].orders}
         </div>
@@ -25,7 +33,7 @@ const ResultList = ({ category, result }) => {
 
   if (category === 'vaccinated' && result) {
     return (
-      <div>
+      <div className="result">
         Injections given: {result[0].vaccinated}
       </div>
     );
@@ -33,7 +41,7 @@ const ResultList = ({ category, result }) => {
 
   if (category === 'perproducer' && result) {
     return (
-      <div>
+      <div className="result">
         {result.map(producer =>
           <>
             <div><strong>{producer.vaccine}</strong></div>
@@ -47,7 +55,7 @@ const ResultList = ({ category, result }) => {
 
   if (category === 'expired' && result) {
     return (
-      <div>
+      <div className="result">
         Bottles (orders) expired: {result[0].expired_bottles}
       </div>
     );
@@ -55,7 +63,7 @@ const ResultList = ({ category, result }) => {
 
   if (category === 'expired-injections' && result) {
     return (
-      <div>
+      <div className="result">
         Vaccines expired before usage: {result.expiredInjections}
       </div>
     );
@@ -63,7 +71,7 @@ const ResultList = ({ category, result }) => {
 
   if (category === 'valid-injections' && result) {
     return (
-      <div>
+      <div className="result">
         Vaccines left to use: {result.validInjections}
       </div>
     );
@@ -71,7 +79,7 @@ const ResultList = ({ category, result }) => {
 
   if (category === 'tobeexpired' && result) {
     return (
-      <div>
+      <div className="result">
         Vaccines to expire in next 10 days: {result[0].valid_injections}
       </div>
     );

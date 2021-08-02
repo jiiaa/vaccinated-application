@@ -8,8 +8,10 @@ const CategorySelection = ({
   setQueryRes
 }) => {
   return (
-    <fieldset>
-      <legend>Please select the information you are interested in:</legend>
+    <fieldset className="categories">
+      <legend>
+        Please select the information you are interested in
+      </legend>
       <div className="input-label">
         <input
           type="radio"
