@@ -1,13 +1,18 @@
 const express = require('express');
 const cors = require('cors');
 
-const app = express();
+const dbRouter = require('./routes/database');
 
+const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.get('/', (req, res) => {
-  res.send('<h3>Vaccinated Application</h3>');
+app.get('/api/ping', (req, res) => {
+  res.send('<h3>Someone pinged Vaccinated Application</h3>');
 });
+
+app.use('/api/v1', dbRouter);
+
+
 
 module.exports = app;
