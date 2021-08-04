@@ -55,8 +55,8 @@ const FormView = () => {
           setSearchTime={setSearchTime}
           setSearchRange={setSearchRange}
         />
-        <fieldset>
-          <input type="submit" value="Search" />
+        <fieldset className="submit">
+          <button type="submit">Search</button>
         </fieldset>
       </form>
       <div>
